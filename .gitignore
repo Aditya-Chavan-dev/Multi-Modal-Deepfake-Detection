@@ -1,0 +1,17 @@
+# Large model files (>100MB)
+model.h5
+model3.h5
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# Firebase/Google Cloud
+.firebase/
+functions/venv/
+
+# IDs and temporary files
+uploads/
+*.log

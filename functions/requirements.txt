@@ -1,0 +1,6 @@
+firebase-functions
+firebase-admin
+opencv-python-headless
+numpy==1.26.4
+librosa
+tensorflow-cpu

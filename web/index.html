@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Fake Detection</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main-container">
+        <h1>DEEP FAKE DETECTION</h1>
+
+        <div class="cards-container">
+            <!-- Image Card -->
+            <div class="card">
+                <h3>TEST IMAGE</h3>
+                <div class="icon-placeholder">📷</div>
+                <input type="file" id="imageInput" accept="image/*" class="file-input">
+                <button onclick="uploadFile('image')" class="btn-action">SCAN IMAGE</button>
+                <div id="imageResult" class="result-box"></div>
+            </div>
+
+            <!-- Audio Card -->
+            <div class="card">
+                <h3>TEST AUDIO</h3>
+                <div class="icon-placeholder">🎙️</div>
+                <input type="file" id="audioInput" accept="audio/*" class="file-input">
+                <button onclick="uploadFile('audio')" class="btn-action">SCAN AUDIO</button>
+                <div id="audioResult" class="result-box"></div>
+            </div>
+
+            <!-- Video Card -->
+            <div class="card">
+                <h3>TEST VIDEO</h3>
+                <div class="icon-placeholder">🎬</div>
+                <input type="file" id="videoInput" accept="video/*" class="file-input">
+                <button onclick="uploadFile('video')" class="btn-action">SCAN VIDEO</button>
+                <div id="videoResult" class="result-box"></div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

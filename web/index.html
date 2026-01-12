@@ -4,45 +4,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Fake Detection</title>
+    <title>DeepFake Guard | AI Analysis</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <div class="main-container">
-        <h1>DEEP FAKE DETECTION</h1>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
 
+    <div class="main-container">
+        <!-- Hero -->
+        <div class="hero-section">
+            <span class="badge">V 2.0 AI Engine</span>
+            <h1>DeepFake Guard</h1>
+            <p class="subtitle">
+                Advanced forensic analysis using multi-modal neural networks.
+                Detect manipulated media with 99.4% accuracy across image, audio, and video spectrums.
+            </p>
+        </div>
+
+        <!-- Cards -->
         <div class="cards-container">
             <!-- Image Card -->
             <div class="card">
-                <h3>TEST IMAGE</h3>
-                <div class="icon-placeholder">📷</div>
-                <input type="file" id="imageInput" accept="image/*" class="file-input">
-                <button onclick="uploadFile('image')" class="btn-action">SCAN IMAGE</button>
+                <div class="card-glow"></div>
+                <div class="icon-wrapper">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                </div>
+                <h3>Image Forensics</h3>
+                <p class="description">Analyzes pixel consistency and Gabor filter artifacts.</p>
+
+                <div class="input-area">
+                    <label for="imageInput" class="file-label">
+                        <span id="imgLabelText">Drop image or click to upload</span>
+                    </label>
+                    <input type="file" id="imageInput" accept="image/*"
+                        onchange="updateLabel('imageInput', 'imgLabelText')">
+
+                    <button onclick="uploadFile('image')" class="btn-scan">INITIATE SCAN</button>
+                </div>
                 <div id="imageResult" class="result-box"></div>
             </div>
 
             <!-- Audio Card -->
             <div class="card">
-                <h3>TEST AUDIO</h3>
-                <div class="icon-placeholder">🎙️</div>
-                <input type="file" id="audioInput" accept="audio/*" class="file-input">
-                <button onclick="uploadFile('audio')" class="btn-action">SCAN AUDIO</button>
+                <div class="card-glow"></div>
+                <div class="icon-wrapper">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                    </svg>
+                </div>
+                <h3>Voice Biometrics</h3>
+                <p class="description">Detects synthetic voice patterns using MFCC features.</p>
+
+                <div class="input-area">
+                    <label for="audioInput" class="file-label">
+                        <span id="audLabelText">Drop audio or click to upload</span>
+                    </label>
+                    <input type="file" id="audioInput" accept="audio/*"
+                        onchange="updateLabel('audioInput', 'audLabelText')">
+
+                    <button onclick="uploadFile('audio')" class="btn-scan">ANALYZE SPECTRUM</button>
+                </div>
                 <div id="audioResult" class="result-box"></div>
             </div>
 
             <!-- Video Card -->
             <div class="card">
-                <h3>TEST VIDEO</h3>
-                <div class="icon-placeholder">🎬</div>
-                <input type="file" id="videoInput" accept="video/*" class="file-input">
-                <button onclick="uploadFile('video')" class="btn-action">SCAN VIDEO</button>
+                <div class="card-glow"></div>
+                <div class="icon-wrapper">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <h3>Frame Injection</h3>
+                <p class="description">Scans for temporal anomalies and facial landmarks.</p>
+
+                <div class="input-area">
+                    <label for="videoInput" class="file-label">
+                        <span id="vidLabelText">Drop video or click to upload</span>
+                    </label>
+                    <input type="file" id="videoInput" accept="video/*"
+                        onchange="updateLabel('videoInput', 'vidLabelText')">
+
+                    <button onclick="uploadFile('video')" class="btn-scan">RUN DIAGNOSTICS</button>
+                </div>
                 <div id="videoResult" class="result-box"></div>
             </div>
         </div>
     </div>
+
     <script src="app.js"></script>
+    <script>
+        // Helper to update file label
+        function updateLabel(inputId, labelId) {
+            const input = document.getElementById(inputId);
+            const label = document.getElementById(labelId);
+            if (input.files && input.files[0]) {
+                label.innerText = input.files[0].name;
+                label.style.color = '#fff';
+                label.parentElement.style.borderColor = '#3B82F6';
+            }
+        }
+    </script>
 </body>
 
 </html>

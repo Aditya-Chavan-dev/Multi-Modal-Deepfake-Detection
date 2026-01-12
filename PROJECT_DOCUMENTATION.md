@@ -70,11 +70,24 @@ The `.h5` files are not standard Keras weights but rather **Serialized Feature S
 
 To demonstrate this capability to recruiters without requiring them to install 5GB of Python libraries, we migrated to a **Serverless Web Mock**.
 
-### A. Technical Stack
-*   **Frontend**: HTML5, Modern CSS3 (Glassmorphism), Vanilla JavaScript.
+### Modern System (The "After")
+*   **Platform**: Serverless Web Application.
+*   **Framework**: **React 18** (Vite), **TailwindCSS**, Framer Motion.
 *   **Hosting**: Firebase Hosting (CDN).
-*   **Design**: Professional "Cyberpunk/Forensic" aesthetic.
+*   **User Interface**: 
+    *   **Aesthetic**: "Forensic Dashboard" theme. Bento-grid layout, high-contrast monochrome.
+    *   **UX**: Drag-and-drop zones, real-time scanning animations, and deterministic simulation.
+    *   **Performance**: Production-optimized build (Vite).
 
+---
+
+## 3. Technology Stack
+
+### Frontend (Client-Side)
+*   **Core**: React 18, Vite.
+*   **Styling**: TailwindCSS (Utility-first), Framer Motion (Animations).
+*   **Icons**: Lucide React.
+*   **Language**: JavaScript (ES6+).
 ### B. Simulation Logic
 Since the "Real Engine" requires heavy local computation or expensive GPU cloud servers:
 *   **The Interface**: Replicates the exact workflow of the desktop app (File Selection $\rightarrow$ Analysis $\rightarrow$ Result).

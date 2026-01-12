@@ -1,104 +1,99 @@
-# Deep Fake Detection System - Technical Documentation
+# Deep Fake Detection System - Comprehensive Technical Reference
 
-## 1. Project Overview
-The **Deep Fake Detection System** is a multi-modal forensic tool designed to identify manipulated digital media. It analyzes **Images**, **Audio**, and **Video** files to detect abnormalities consistent with AI-generated content (Deepfakes). 
-
-Originally built as a standalone desktop application, it has been modernized into a cloud-native Web Application to improve accessibility, user experience, and deployment scalability.
-
----
-
-## 2. System Evolution
-
-### Legacy System (The "Before")
-*   **Platform**: Desktop Application (Windows Executable).
-*   **Framework**: Python `PyQt5` + `Tkinter` (Hybrid UI).
-*   **User Interface**: 
-    *   Basic windowed interface with standard buttons.
-    *   Static background images (`A1.png`, `y.png`).
-    *   Blocking operations (App froze while processing video).
-    *   Required local libraries (`tensorflow`, `opencv`, `pyqt5`) installed on the user's machine.
-*   **Authentication**: Custom SQLite implementation vulnerable to SQL Injection.
-
-### Modern System (The "After")
-*   **Platform**: Serverless Web Application.
-*   **Framework**: HTML5, Vanilla JavaScript, CSS3.
-*   **Hosting**: Firebase Hosting (Google Cloud Network).
-*   **User Interface**: 
-    *   **Aesthetic**: "Cyberpunk/AI Forensic" theme. Dark mode (`#030014`) with Aurora gradients.
-    *   **UX**: Glassmorphism cards, micro-animations, and drag-and-drop file support.
-    *   **Responsiveness**: Fully responsive grid layout working on Mobile and Desktop.
-    *   **Performance**: Non-blocking asynchronous simulations.
+## 1. Project Identity
+*   **Project Name**: Multi-Modal Deep Fake Detection System.
+*   **Core Objective**: Authenticate digital media (Image, Audio, Video) using forensic feature analysis to detect AI-generated artifacts.
+*   **Evolution**: Migrated from a Local Desktop Client to a Serverless Cloud Architecture.
 
 ---
 
-## 3. Technology Stack
+## 2. Legacy System (The "Real" Engine)
 
-### Frontend (Client-Side)
-*   **Core**: Semantic HTML5.
-*   **Styling**: Vanilla CSS3 (Custom Variables, Flexbox/Grid, Keyframe Animations).
-    *   *Design System*: custom "Glass UI" with blur filters and glowing borders.
-*   **Logic**: Vanilla JavaScript (ES6+).
-    *   Handles file input events.
-    *   Simulates asynchronous processing states.
-    *   DOM manipulation for dynamic result rendering.
+This section describes the actual Python-based detection engine originally built (`MAIN_CODE (2).py`).
 
-### Infrastructure
-*   **Platform**: Firebase.
-*   **Service**: Firebase Hosting (Static Asset Delivery).
-*   **CI/CD**: Manual deployment via Firebase CLI.
+### A. Technical Stack
+*   **Language**: Python 3.x.
+*   **GUI Framework**: `PyQt5` (Primary), `TKinter` (File Dialogs).
+*   **Computer Vision**: `OpenCV` (cv2), `numpy`.
+*   **Audio Processing**: `Librosa`.
+*   **Deep Learning Context**: `TensorFlow`/`Keras` (Architectural definitions present, but inference optimized via distance metrics).
+
+### B. The Machine Learning Architecture
+The system employs a **Hybrid Forensic Approach** rather than a simple "Black Box" classifier. It relies on the principle that AI generation leaves specific statistical fingerprints in frequency and texture domains.
+
+#### 1. Image Forensics (`model.h5`)
+*   **Algorithm**: **Texture Analysis via Gabor Filter Banks**.
+*   **Why**: Deepfakes (GANs) often struggle with high-frequency texture details (skin pores, hair), leaving "smoothing" artifacts.
+*   **Mechanism**:
+    1.  **Preprocessing**: Resize to 256x256 $\rightarrow$ Median Blur (Noise Reduction) $\rightarrow$ Grayscale.
+    2.  **Feature Engineering**: A bank of **Gabor Filters** is constructed at multiple orientations ($0, \pi/16, ..., \pi$).
+        *   *Code Reference*: `build_filters()` generates these kernels.
+        *   *Process*: `cv2.filter2D` convolves the image with these kernels to highlight texture anomalies.
+    3.  **Classification**:
+        *   The system loads `model.h5` (a binary Pickle file containing reference feature vectors of known "Real" and "Fake" datasets).
+        *   It computes the **Euclidean Distance (L2 Norm)** between the Uploaded Image's features and the Reference vectors.
+        *   **Decision**: `argmin(Distance)` determines if it is closer to the "Fake" or "Real" cluster.
+
+#### 2. Audio Biometrics (`model2.h5`)
+*   **Algorithm**: **Spectral Consistency Analysis via MFCC**.
+*   **Why**: Synthetic voices (TTS/VC) lack the subtle organic spectral variance of human vocal cords.
+*   **Mechanism**:
+    1.  **Ingestion**: Load audio via `librosa`.
+    2.  **Feature Extraction**: Compute **Mel-frequency Cepstral Coefficients (MFCCs)**.
+        *   This captures the "timbre" or "color" of the audio signal.
+    3.  **Classification**:
+        *   Sum and Transpose the coefficient matrix.
+        *   Compare against `model2.h5` signature database using the same Euclidean Distance metric.
+
+#### 3. Video Integrity (`model3.h5`)
+*   **Algorithm**: **Temporal Frame Analysis**.
+*   **Why**: Deepfakes often flicker or lose coherence between frames.
+*   **Mechanism**:
+    1.  **Sampling**: Extracts the first **100 frames** of the video.
+    2.  **Frame Analysis**: Each frame is treated as an independent Image Forensic task (Gabor Filters).
+    3.  **Aggregation**: A temporal average of the "Fake Scores" is calculated.
+    4.  **Thresholding**: If the mean fake score exceeds a specific threshold, the entire video is flagged.
+
+### C. Build Process (How Models Was Created)
+The `.h5` files are not standard Keras weights but rather **Serialized Feature Stores**.
+1.  **Training Phase**:
+    *   A dataset of Real and Fake media was passed through the Feature Extractors (Gabor/MFCC).
+    *   The resulting feature vectors were aggregated.
+    *   `pickle.dump()` was used to save these reference matrices into `model.h5`, `model2.h5`, and `model3.h5`.
+2.  **Inference Phase**:
+    *   The app loads these matrices into memory.
+    *   Incoming data is projected into the same feature space and compared.
 
 ---
 
-## 4. The Core Intelligence (ML Models & Algorithms)
+## 3. Modern Web Architecture (The Present)
 
-Unlike generic "black box" deep learning models, this system uses a **Feature Extraction & Distance Metric** approach to ensure explainability and speed.
+To demonstrate this capability to recruiters without requiring them to install 5GB of Python libraries, we migrated to a **Serverless Web Mock**.
 
-### A. Image Forensics (`model.h5`)
-*   **Input**: RGB Images (Resized to 256x256).
-*   **Preprocessing**:
-    1.  **Median Blur**: Applied to reduce salt-and-pepper noise (ksize=5).
-    2.  **Grayscale Conversion**: Reduces dimensionality.
-*   **Feature Extraction**: **Gabor Filters**.
-    *   The system generates a bank of **Gabor Kernels** at various orientations ($0, \pi/16, ..., \pi$).
-    *   These filters are excellent at detecting **texture abnormalities** and **edge artifacts** often left behind by GANs (Generative Adversarial Networks) during face synthesis.
-*   **Classification Logic**:
-    *   The features of the uploaded image are flattened.
-    *   **Euclidean Distance (L2 Norm)** is calculated against the cached feature set in `model.h5`.
-    *   Lower distance = High similarity to "Learned" Fake fingerprints.
+### A. Technical Stack
+*   **Frontend**: HTML5, Modern CSS3 (Glassmorphism), Vanilla JavaScript.
+*   **Hosting**: Firebase Hosting (CDN).
+*   **Design**: Professional "Cyberpunk/Forensic" aesthetic.
 
-### B. Audio Biometrics (`model2.h5`)
-*   **Input**: WAV Audio files.
-*   **Feature Extraction**: **MFCC (Mel-frequency cepstral coefficients)**.
-    *   Uses `librosa` to extract the short-term power spectrum of the sound.
-    *   MFCCs accurately represent the "timbre" of a voice.
-    *   AI-generated voices often lack subtle high-frequency imperfections present in organic human speech.
-*   **Logic**:
-    *   Features are summed and transposed.
-    *   Distance metric comparison against the specific audio signatures stored in `model2.h5`.
-
-### C. Video Forensics (`model3.h5`)
-*   **Input**: MP4 Video files.
-*   **Methodology**: **Frame-by-Frame Temporal Analysis**.
-    *   The video is treated as a sequence of images.
-    *   The system analyzes the first **100 frames**.
-*   **Logic**:
-    *   Each frame undergoes the same Gabor Filter analysis as the Image module.
-    *   Scores are aggregated across frames to compute a **Mean Fake Score**.
-    *   This temporal averaging helps filter out single-frame artifacts (compression noise) vs. persistent generation artifacts (deepfake faces).
+### B. Simulation Logic
+Since the "Real Engine" requires heavy local computation or expensive GPU cloud servers:
+*   **The Interface**: Replicates the exact workflow of the desktop app (File Selection $\rightarrow$ Analysis $\rightarrow$ Result).
+*   **The Backend**: Replaced by a deterministic Client-Side Simulation.
+    *   **Latency**: We inject a 2-second delay to realistically mimic the Gabor Filter convolution time.
+    *   **Result Generation**:
+        *   We scan filenames for "keywords" (fake/real) to allow you to demonstrate both Start States reliably.
+        *   This provides a 100% stable demo environment.
 
 ---
 
-## 5. Implementation Deployment (Mock Mode)
+## 4. Comparison Summary
 
-To facilitate immediate recruiter demonstration without incurring cloud compute costs (GPU/Python usage), the current live deployment operates in **Simulation Mode**:
+| Feature | Legacy Desktop App | Modern Web App |
+| :--- | :--- | :--- |
+| **Accessibility** | Requires Installation | Instant (URL) |
+| **Compute** | Heavy Local CPU/RAM | Zero (Client-Side) |
+| **UI/UX** | Basic, Blocking | Fluid, Responsive, Premium |
+| **Codebase** | Python/Qt | JS/HTML/CSS |
+| **Detection** | Real (Gabor/MFCC) | Simulated (Mock) |
 
-1.  **Input**: User selects a file.
-2.  **Processing**: The frontend initiates a deterministic simulation.
-    *   **Latency Simulation**: A 2-second artificial delay mimics the inference time of the Gabor filter bank.
-    *   **Determination Logic**:
-        *   File names containing "fake" $\rightarrow$ Trigger `FAKE` result.
-        *   File names containing "real" $\rightarrow$ Trigger `NORMAL` result.
-        *   Randomized probabilistic fallback for generic files.
-3.  **Output**: Renders the result using the high-contrast warning (Red) or success (Green) UI tokens.
-
-This architecture ensures high availability (99.9% uptime on CDN) and zero "Cold Start" latency, providing a seamless review experience.
+---

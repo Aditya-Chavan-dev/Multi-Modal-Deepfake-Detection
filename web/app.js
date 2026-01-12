@@ -1,9 +1,4 @@
-// --- DASHBOARD LOGIC (No Auth) ---
-
-// Replace this with your actual Cloud Function URL after deployment
-// For local testing, use the emulator URL usually printed in the terminal
-// e.g., http://127.0.0.1:5001/PROJECT_ID/us-central1
-const API_BASE_URL = '/api'; // Using relative path for local proxy or same-domain hosting
+// --- MOCK DASHBOARD LOGIC (Simulation) ---
 
 async function uploadFile(type) {
     const input = document.getElementById(`${type}Input`);
@@ -15,8 +10,6 @@ async function uploadFile(type) {
     }
 
     const file = input.files[0];
-    const formData = new FormData();
-    formData.append('file', file);
 
     // UX: Show loading
     resultBox.className = 'result-box show';
@@ -26,33 +19,34 @@ async function uploadFile(type) {
     resultBox.style.boxShadow = 'none';
     resultBox.innerText = 'ANALYZING...';
 
-    try {
-        const res = await fetch(`${API_BASE_URL}/predict/${type}`, {
-            method: 'POST',
-            body: formData
-        });
-        const data = await res.json();
+    // SIMULATION MOCK
+    // Wait for 2 seconds to simulate processing time
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
-        if (res.ok) {
-            resultBox.innerText = `${data.result}`;
+    // Determine Result
+    // 1. Check for keywords in filename for deterministic testing
+    let result = "NORMAL";
+    const filename = file.name.toLowerCase();
 
-            // Reset classes
-            resultBox.className = 'result-box show';
-            if (data.result === 'FAKE') {
-                resultBox.classList.add('result-fake');
-            } else {
-                resultBox.classList.add('result-normal');
-            }
-        } else {
-            resultBox.innerText = `ERROR`;
-            console.error(data.error);
-            resultBox.style.color = '#fca5a5';
-            resultBox.style.border = '1px solid rgba(239, 68, 68, 0.5)';
-        }
-    } catch (err) {
-        console.error(err);
-        resultBox.innerText = 'NETWORK ERROR';
-        resultBox.style.color = '#fca5a5';
-        resultBox.style.border = '1px solid rgba(239, 68, 68, 0.5)';
+    if (filename.includes("fake") || filename.includes("deepfake")) {
+        result = "FAKE";
+    } else if (filename.includes("real") || filename.includes("normal")) {
+        result = "NORMAL";
+    } else {
+        // 2. Random weighted result (70% Normal, 30% Fake)
+        result = Math.random() > 0.3 ? "NORMAL" : "FAKE";
+    }
+
+    // Display Result
+    resultBox.innerText = result;
+
+    // Apply Styles
+    resultBox.className = 'result-box show';
+    if (result === 'FAKE') {
+        resultBox.classList.add('result-fake');
+        resultBox.classList.remove('result-normal');
+    } else {
+        resultBox.classList.add('result-normal');
+        resultBox.classList.remove('result-fake');
     }
 }

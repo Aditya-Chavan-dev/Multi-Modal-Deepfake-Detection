@@ -5,24 +5,6 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "/api/predict/image",
-        "function": "predict_image"
-      },
-      {
-        "source": "/api/predict/audio",
-        "function": "predict_audio"
-      },
-      {
-        "source": "/api/predict/video",
-        "function": "predict_video"
-      }
     ]
-  },
-  "functions": {
-    "source": "functions",
-    "runtime": "python311" 
   }
 }
